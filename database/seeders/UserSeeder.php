@@ -19,7 +19,7 @@ class UserSeeder extends Seeder
             'email' => 'sandylamichhane10@gmail.com',
             'username' => 'sandy',
             'password' => Hash::make('sandip123'),
-            'role' => 'SuperAdmin',
+            'role' => 'Admin',
             'status' => 'Active',
         ]);
     }

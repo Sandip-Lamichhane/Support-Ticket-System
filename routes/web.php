@@ -6,19 +6,22 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/login', [AuthController::class, 'showLoginForm'])->name('ShowLogin');
-
-Route::post('/login', [AuthController::class, 'login'])->name('login');
-
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
-Route::get('/dashboard', function() {
+Route::middleware('guest')->group(function(){
+Route::get('/login', [AuthController::class, 'showLoginForm'])->name('showlogin');
+Route::post('/login', [AuthController::class, 'login'])->name('login');
+});
+
+
+Route::middleware('auth')->group(function(){
+Route::get('/dashboard', function() { 
     return view('dashboard.admin');
-})->name('dashboard.admin')->middleware('checklogin');
+})->name('dashboard.admin');
+});
+
+
 
 Route::get('/password-change', function(){
     return view('user.passChange');
 })->name('passChange');
-
-// Handle the password update
-// Route::put('/password-change',)

@@ -19,7 +19,7 @@
                 <a href="#how" class="hover:text-blue-600">How It Works</a>
                 <a href="#contact" class="hover:text-blue-600">Contact</a>
             </nav>
-            <a href="{{route('ShowLogin')}}" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">Login</a>
+            <a href="{{route('showlogin')}}" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700">Login</a>
         </div>
     </header>
 

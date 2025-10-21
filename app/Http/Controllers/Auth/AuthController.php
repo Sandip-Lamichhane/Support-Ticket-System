@@ -11,7 +11,7 @@ use App\Models\User;
 class AuthController extends Controller
 {
     // Display login form
-    public function ShowLoginForm()
+    public function showLoginForm()
     {
         return view('auth.login');
     }
@@ -42,7 +42,10 @@ class AuthController extends Controller
         }
 
         // Step 4: Attempt authentication
-        if (!Auth::attempt($validated)) {
+        if (!Auth::attempt([
+            'username' => $validated['username'],
+            'password' => $validated['password'],
+        ])) {
             throw ValidationException::withMessages([
                 'password' => 'Username or password is incorrect!',
             ]);
@@ -54,8 +57,13 @@ class AuthController extends Controller
         return redirect()->route('dashboard.admin');
     }
 
-    public function logout()
+    public function logout(Request $request)
     {
+        Auth::logout();
 
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        return redirect()->route('showlogin');
     }
 }
