@@ -5,9 +5,9 @@
 
       <!-- Dashboard -->
       <div>
-        <a href="{{ route('dashboard') }}"
+        <a href="{{ route('dashboard.admin') }}"
           class="flex items-center gap-x-3 p-2 rounded-lg 
-            {{ request()->is('dashboard') ? 'bg-blue-100 text-blue-700 font-medium' : 'hover:bg-gray-100' }}">
+            {{ request()->is('dashboard.admin') ? 'bg-blue-100 text-blue-700 font-medium' : 'hover:bg-gray-100' }}">
           <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2"
             viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round"

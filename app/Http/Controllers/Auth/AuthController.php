@@ -5,84 +5,57 @@ namespace App\Http\Controllers\Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\ValidationException;
 use App\Models\User;
 
 class AuthController extends Controller
 {
-    /**
-     * Show login form.
-     */
-    public function showLoginForm()
+    // Display login form
+    public function ShowLoginForm()
     {
-        // If already authenticated, skip login form
-        if (Auth::check()) {
-            return redirect()->route('dashboard');
-        }
-
         return view('auth.login');
     }
 
-    /**
-     * Handle login submission.
-     */
+    // Performs login action
     public function login(Request $request)
     {
-        // 1) Validate incoming data
-        $request->validate([
+        // Step 1: Validate input
+        $validated = $request->validate([
             'username' => 'required|string',
             'password' => 'required|string',
         ]);
 
-        // 2) Get values and remember flag
-        $username = $request->input('username');
-        $password = $request->input('password');
-        $remember = $request->filled('remember'); // true if checkbox checked
+        // Step 2: Find user
+        $user = User::where('username', $validated['username'])->first();
 
-        // 3) Find user by username
-        $user = User::where('username', $username)->first();
-
-        // 4) If user not found -> show generic error
         if (!$user) {
-            // Generic error helps prevent username enumeration.
-            return back()->withErrors(['username' => 'Invalid username or password.'])->withInput();
+            throw ValidationException::withMessages([
+                'username' => 'Username or password is incorrect!',
+            ]);
         }
 
-        // 5) Check account status (custom business rule)
+        // Step 3: Check user status
         if ($user->status !== 'Active') {
-            return back()->withErrors(['status' => 'Your account is not active.'])->withInput();
+            throw ValidationException::withMessages([
+                'username' => 'Your account is inactive. Please contact support.',
+            ]);
         }
 
-        // 6) Verify password
-        if (!Hash::check($password, $user->password)) {
-            return back()->withErrors(['username' => 'Invalid username or password.'])->withInput();
+        // Step 4: Attempt authentication
+        if (!Auth::attempt($validated)) {
+            throw ValidationException::withMessages([
+                'password' => 'Username or password is incorrect!',
+            ]);
         }
 
-        // 7) Log user in (with "remember me" option)
-        // Auth::login($user, $remember);
-
-        // Prevent session fixation
+        // Step 5: Successful login
         $request->session()->regenerate();
 
-        // 8) Redirect based on role (customize roles as you use them)
-        if ($user->role === 'Admin') {
-            return redirect()->intended(route('admin.dashboard'));
-        }
-
-        return redirect()->intended(route('dashboard'));
+        return redirect()->route('dashboard.admin');
     }
 
-    /**
-     * Logout user.
-     */
-    public function logout(Request $request)
+    public function logout()
     {
-        Auth::logout();
 
-        // Clear session and regenerate CSRF token
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
-
-        return redirect()->route('login')->with('status', 'You have been logged out.');
     }
 }

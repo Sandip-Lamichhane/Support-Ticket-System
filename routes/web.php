@@ -6,15 +6,15 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login')->middleware('guest');
+Route::get('/login', [AuthController::class, 'showLoginForm'])->name('ShowLogin');
 
-Route::post('/login', [AuthController::class, 'login'])->name('login.submit');
+Route::post('/login', [AuthController::class, 'login'])->name('login');
 
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 Route::get('/dashboard', function() {
-    return view('dashboard.index');
-})->name('dashboard')->middleware('auth');
+    return view('dashboard.admin');
+})->name('dashboard.admin')->middleware('checklogin');
 
 Route::get('/password-change', function(){
     return view('user.passChange');
