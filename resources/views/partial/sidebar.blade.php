@@ -37,9 +37,9 @@
 
             <!-- Users -->
             <div>
-                <a href="#"
+                <a href="{{ route('showUsers') }}"
                     class="flex items-center gap-x-3 p-2 rounded-lg 
-            {{ request()->is('user*') ? 'bg-blue-100 text-blue-700 font-medium' : 'hover:bg-gray-100' }}">
+            {{ request()->is('users*') ? 'bg-blue-100 text-blue-700 font-medium' : 'hover:bg-gray-100' }}">
                     <i class="fas fa-user-plus"></i>
                     <span>Users</span>
                 </a>

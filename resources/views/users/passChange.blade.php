@@ -56,9 +56,9 @@
                     class="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none">
             </div>
 
-            <!-- Action Buttons -->
+            <!--Cancel Button-->
             <div class="flex justify-end gap-3 pt-6 border-t mt-6">
-                <a href="{{ route('dashboard') }}"
+                <a href="{{ route('dashboard.admin') }}"
                     class="px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200">Cancel</a>
                 <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">Update
                     Password</button>

@@ -1,5 +1,6 @@
 <?php
 use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\Users\UsersController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -18,9 +19,9 @@ Route::middleware('auth')->group(function(){
 Route::get('/dashboard', function() { 
     return view('dashboard.admin');
 })->name('dashboard.admin');
+
+Route::get('/users', [UsersController::class, 'showUsers'])->name('showUsers');
 });
-
-
 
 Route::get('/password-change', function(){
     return view('user.passChange');
